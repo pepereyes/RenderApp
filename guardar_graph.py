@@ -2,6 +2,9 @@ import requests
 from flask import Flask, request, send_file
 from datetime import datetime
 import os
+import logging
+logging.basicConfig(level=logging.INFO)
+
 
 app = Flask(__name__)
 
@@ -36,9 +39,11 @@ def guardar():
         'Content-Type': 'application/json'
     }
     body = {"values": values}
+    logging.info(f"POST to {url} with body: {body}")
 
     response = requests.post(url, headers=headers, json=body)
     return {'status': 'ok', 'response': response.json()}
+    logging.info(f"Response status: {response.status_code}, body: {response.text}")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang='es'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>Formulario de Datos CCR</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; text-align: center; }
+  img { max-width: 150px; margin-bottom: 15px; }
+  form { max-width: 600px; margin: auto; display: flex; flex-direction: column; text-align: left; }
+  input, select, textarea { margin-bottom: 10px; padding: 8px; font-size: 14px; }
+  button { padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer; }
+  button:hover { background-color: #218838; }
+  .links { margin-top: 15px; text-align: center; }
+</style>
+</head>
+<body>
+<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/1200px-WhatsApp.svg.png' alt='Logo' />
+<h2 style='text-align:center;'>Formulario de Datos CCR</h2>
+<form id='seguimientoForm'>
+  <input type='text' name='NombreCompleto' placeholder='Nombre completo' required>
+  <input type='email' name='Correo' placeholder='Correo electrónico' required>
+  <input type='tel' id='Telefono' name='Telefono' placeholder='Teléfono' required>
+  <label for='Preferencia'>Forma de contacto:</label>
+  <select name='Preferencia'>
+    <option value='visita'>Visita</option>
+    <option value='llamada'>Llamada</option>
+    <option value='whatsapp'>WhatsApp</option>
+  </select>
+  <textarea name='Peticion' placeholder='Petición de oración'></textarea>
+  <input type='text' name='Responsable' placeholder='Responsable'>
+  <textarea name='Observaciones' placeholder='Observaciones'></textarea>
+  <button type='submit'>Guardar</button>
+</form>
+<div class='links' id='links'></div>
+<script>
+  document.getElementById('seguimientoForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var telefono = document.getElementById('Telefono').value;
+    var linkWhatsApp = 'https://wa.me/' + telefono;
+    var linkSMS = 'sms:' + telefono;
+    document.getElementById('links').innerHTML = '<a href="' + linkWhatsApp + '" target="_blank">Enviar WhatsApp</a> | <a href="' + linkSMS + '">Enviar SMS</a>';
+
+    var data = {
+      NombreCompleto: document.querySelector('[name=NombreCompleto]').value,
+      Correo: document.querySelector('[name=Correo]').value,
+      Telefono: telefono,
+      Preferencia: document.querySelector('[name=Preferencia]').value,
+      Peticion: document.querySelector('[name=Peticion]').value,
+      Responsable: document.querySelector('[name=Responsable]').value,
+      Observaciones: document.querySelector('[name=Observaciones]').value
+    };
+
+    fetch('/guardar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(res => res.json()).then(response => {
+      alert('Registro guardado con ID: ' + response.id);
+    }).catch(err => alert('Error al guardar: ' + err));
+  });
+</script>
+</body>
+</html>

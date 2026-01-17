@@ -1,0 +1,1 @@
+web: gunicorn guardar_graph:app

@@ -41,8 +41,15 @@ def guardar():
     logging.info(f"POST to {url} with body: {body}")
 
     response = requests.post(url, headers=headers, json=body)
-    return {'status': 'ok', 'response': response.json()}
+    
     logging.info(f"Response status: {response.status_code}, body: {response.text}")
+
+    response.raise_for_status()  # Lanza error si la respuesta no es 200
+    return {'status': 'ok', 'response': response.json()}
+    except Exception as e:
+        logging.error(f"Error en /guardar: {e}")
+        return {'status': 'error', 'message': str(e)}, 50
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))

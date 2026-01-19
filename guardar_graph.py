@@ -16,40 +16,42 @@ ACCESS_TOKEN = 'EwCYBMl6BAAUu4TQbLz/EdYigQnDPtIo76ZZUKsAAYMi1O89F0WcqaiG3962hxB4
 def index():
     return send_file('formulario.html')
 
+
 @app.route('/guardar', methods=['POST'])
 def guardar():
-    data = request.json
-    fecha_hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    try:
+        data = request.json
+        fecha_hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    # Datos a enviar al Excel en OneDrive
-    values = [[
-        fecha_hora,
-        data.get('NombreCompleto'),
-        data.get('Correo'),
-        data.get('Telefono'),
-        data.get('Preferencia'),
-        data.get('Peticion'),
-        data.get('Responsable'),
-        data.get('Observaciones')
-    ]]
+        values = [[
+            fecha_hora,
+            data.get('NombreCompleto'),
+            data.get('Correo'),
+            data.get('Telefono'),
+            data.get('Preferencia'),
+            data.get('Peticion'),
+            data.get('Responsable'),
+            data.get('Observaciones')
+        ]]
 
-    url = f"https://graph.microsoft.com/v1.0/me/drive/items/AE5FA390517BD5F9!s62c145bd70e04e209c38a0c99358aab4/workbook/worksheets/Hoja1/tables/Table1/rows/add"
-    headers = {
-        'Authorization': f'Bearer {ACCESS_TOKEN}',
-        'Content-Type': 'application/json'
-    }
-    body = {"values": values}
-    logging.info(f"POST to {url} with body: {body}")
+        url = f"https://graph.microsoft.com/v1.0/me/drive/items/{ITEM_ID}/workbook/worksheets/Hoja1/tables/Table1/rows/add"
+        headers = {
+            'Authorization': f'Bearer {ACCESS_TOKEN}',
+            'Content-Type': 'application/json'
+        }
+        body = {"values": values}
 
-    response = requests.post(url, headers=headers, json=body)
-    
-    logging.info(f"Response status: {response.status_code}, body: {response.text}")
+        logging.info(f"POST to {url} with body: {body}")
+        response = requests.post(url, headers=headers, json=body)
+        logging.info(f"Response status: {response.status_code}, body: {response.text}")
 
-    response.raise_for_status()  # Lanza error si la respuesta no es 200
-    return {'status': 'ok', 'response': response.json()}
+        response.raise_for_status()
+        return {'status': 'ok', 'response': response.json()}
+
     except Exception as e:
         logging.error(f"Error en /guardar: {e}")
-        return {'status': 'error', 'message': str(e)}, 50
+        return {'status': 'error', 'message': str(e)}, 500
+
 
 
 if __name__ == '__main__':

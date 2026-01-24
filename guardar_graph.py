@@ -22,26 +22,28 @@ def guardar():
         data = request.json
         fecha_hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-        values = [[
-            fecha_hora,
-            data.get('NombreCompleto'),
-            data.get('Correo'),
-            data.get('Telefono'),
-            data.get('Preferencia'),
-            data.get('Peticion'),
-            data.get('Responsable'),
-            data.get('Observaciones')
-        ]]
+        
+values = [[
+    fecha_hora,
+    data.get('NombreCompleto'),
+    data.get('Correo'),
+    data.get('Telefono'),
+    data.get('Preferencia'),
+    data.get('Peticion'),
+    data.get('Responsable'),
+    data.get('Observaciones')
+]]
 
-        url = f"https://graph.microsoft.com/v1.0/me/drive/items/{ITEM_ID}/workbook/worksheets/SEGUIMIENTO/range(address='A2:H2')"
-        headers = {
-            'Authorization': f'Bearer {ACCESS_TOKEN}',
-            'Content-Type': 'application/json'
-        }
-        body = {"values": values}
+url = f"https://graph.microsoft.com/v1.0/me/drive/items/{ITEM_ID}/workbook/worksheets/SEGUIMIENTO/tables/Table1/rows/add"
+headers = {
+    'Authorization': f'Bearer {ACCESS_TOKEN}',
+    'Content-Type': 'application/json'
+}
+body = {"values": values}
 
-        logging.info(f"PATCH to {url} with body: {body}")
-        response = requests.patch(url, headers=headers, json=body)
+logging.info(f"POST to {url} with body: {body}")
+response = requests.post(url, headers=headers, json=body)
+
         logging.info(f"Response status: {response.status_code}, body: {response.text}")
 
         response.raise_for_status()

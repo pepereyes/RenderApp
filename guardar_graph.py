@@ -33,7 +33,7 @@ def guardar():
             data.get('Observaciones')
         ]]
 
-        url = f"https://graph.microsoft.com/v1.0/me/drive/items/{ITEM_ID}/workbook/worksheets/Hoja1/tables/Table1/rows/add"
+        url = f"https://graph.microsoft.com/v1.0/me/drive/items/{ITEM_ID}/workbook/worksheets/SEGUIMIENTO/range(address='A2:H2')"
         headers = {
             'Authorization': f'Bearer {ACCESS_TOKEN}',
             'Content-Type': 'application/json'

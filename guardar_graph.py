@@ -40,7 +40,7 @@ def guardar():
         }
         body = {"values": values}
 
-        logging.info(f"POST to {url} with body: {body}")
+        logging.info(f"PATCH to {url} with body: {body}")
         response = requests.post(url, headers=headers, json=body)
         logging.info(f"Response status: {response.status_code}, body: {response.text}")
 

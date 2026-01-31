@@ -1,0 +1,14 @@
+
+{
+  "client_id": "b2f1a3a0-de4c-45aa-9dbd-8a576a49a090",
+  "client_secret": null,
+  "tenant_id": "common",
+  "authority": "https://login.microsoftonline.com/common",
+  "redirect_uri": "https://formulario-ccr-jjrg-160126-v1.onrender.com/auth/callback",
+  "scopes": [
+    "User.Read",
+    "Files.ReadWrite",
+    "offline_access"
+  ]
+}
+

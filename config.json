@@ -8,7 +8,6 @@
   "scopes": [
     "User.Read",
     "Files.ReadWrite",
-    "offline_access"
   ]
 }
 
